@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:timer_control/app/ui/pages/mobile/home/controller/controller_home.dart';
+import 'package:timer_control/app/ui/pages/windows/home/controller/controller_home.dart';
 
-final homeProvider = ChangeNotifierProvider((ref) {
+final homeWindowsProvider = ChangeNotifierProvider((ref) {
   return HomeController();
 });

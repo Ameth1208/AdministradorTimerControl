@@ -1,6 +1,6 @@
 # timer_control
 
-A new Flutter project.
+ArGAME time management system
 
 ## Getting Started
 

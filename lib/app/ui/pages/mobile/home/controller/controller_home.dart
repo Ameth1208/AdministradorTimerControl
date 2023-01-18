@@ -1,46 +1,63 @@
-import 'package:dart_ipify/dart_ipify.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:tcp_socket_connection/tcp_socket_connection.dart';
+import 'package:timer_control/app/dominio/models/model_devices.dart';
 
+///CONTROLLER ANDROID
 class HomeController extends ChangeNotifier {
-  HomeController() {
-    onIpInterna();
-  }
+  TextEditingController nameDevice = TextEditingController();
+  TextEditingController numberIp = TextEditingController();
 
-  TextEditingController textEditingController = TextEditingController();
-
-  String _ipInterna = '';
-  String get ipInterna => _ipInterna;
-
-  void onIpInterna() async {
-    final ipv4 = await Ipify.ipv64();
-    _ipInterna = ipv4;
-
-    // TcpSocketConnection socketConnection =
-    //     TcpSocketConnection(_ipInterna, 6464);
-    notifyListeners();
-  }
-
-  String _msg = '';
-  String get msg => _msg;
-  set msg(String msg) {
-    _msg = msg;
-    notifyListeners();
-  }
-
+  ///[Connect IP Socket]
   void onConnect(String ip) async {
     TcpSocketConnection socketConnection = TcpSocketConnection(ip, 6464);
     if (await socketConnection.canConnect(5000, attempts: 3)) {
-      //check if it's possible to connect to the endpoint
       await socketConnection.connect(5000, onRecived, attempts: 3);
     }
-
     notifyListeners();
   }
 
-  void onRecived(String ip) {
-    TcpSocketConnection socketConnection = TcpSocketConnection(ip, 6464);
-    socketConnection.sendMessage("MessageIsReceived :D ");
+  void onRecived() {
+    notifyListeners();
+  }
+
+  ///[Acciones visuales]
+  List<ModelDevices> _listDevices = [];
+  List<ModelDevices> get listDevices => _listDevices;
+  set listDevices(List<ModelDevices> listDevices) {
+    _listDevices = listDevices;
+  }
+
+  ///[State Devices]
+  final List<bool> _state = [];
+  List<bool> get state => _state;
+  void onState(int i, bool value) {
+    _state[i] = !value;
+    notifyListeners();
+  }
+
+  ///[VisibleCard]
+  final List<bool> _visible = [];
+  List<bool> get visible => _visible;
+  void onVisible(int i, bool value) {
+    _visible[i] = !value;
+    notifyListeners();
+  }
+
+  ///[Añadir dispositivo]
+  void onAdd() {
+    log(nameDevice.text);
+    log(numberIp.text);
+
+    listDevices.add(ModelDevices(
+      nameDevices: nameDevice.text,
+      numberIp: numberIp.text,
+    ));
+    state.add(true);
+    visible.add(true);
+    nameDevice.clear();
+    numberIp.clear();
     notifyListeners();
   }
 }
