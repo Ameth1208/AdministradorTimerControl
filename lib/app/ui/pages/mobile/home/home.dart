@@ -10,7 +10,7 @@ class HomeMobile extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(homeProvider);
+    //final controller = ref.watch(homeProvider);
     return SafeArea(
       child: Scaffold(
         floatingActionButton: CustomButton(

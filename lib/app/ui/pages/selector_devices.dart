@@ -1,4 +1,3 @@
-import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'global_apps.dart';
 
@@ -7,17 +6,6 @@ class SelectorDevices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (Platform.isAndroid) {
-      return const HomeMobile();
-    } else if (Platform.isWindows) {
-      return const HomeWindows();
-    } else {
-      return Scaffold(
-        body: Container(
-          alignment: Alignment.center,
-          child: const Text('Not detect Devices'),
-        ),
-      );
-    }
+    return const HomeMobile();
   }
 }

@@ -15,24 +15,22 @@ class CustomTextField extends StatelessWidget {
   final TextInputType textInputType;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: TextFormField(
-        keyboardType: textInputType,
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: hint,
-          labelStyle: TextStyle(
-            color: CustomColors.primary_100,
-            fontSize: context.dp(fontSize),
-            fontWeight: FontWeight.w700,
-          ),
-          border: const OutlineInputBorder(),
+    return TextFormField(
+      keyboardType: textInputType,
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: hint,
+        labelStyle: TextStyle(
+          color: CustomColors.primary_100,
+          fontSize: context.dp(fontSize),
+          fontWeight: FontWeight.w700,
         ),
-        style: TextStyle(
-            color: CustomColors.primary,
-            fontSize: context.dp(fontSize),
-            fontWeight: FontWeight.w700),
+        border: const OutlineInputBorder(),
       ),
+      style: TextStyle(
+          color: CustomColors.primary,
+          fontSize: context.dp(fontSize),
+          fontWeight: FontWeight.w700),
     );
   }
 }

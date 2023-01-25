@@ -1,7 +1,7 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:tcp_socket_connection/tcp_socket_connection.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart';
 import 'package:timer_control/app/dominio/models/model_devices.dart';
 
 ///CONTROLLER ANDROID
@@ -10,15 +10,27 @@ class HomeController extends ChangeNotifier {
   TextEditingController numberIp = TextEditingController();
 
   ///[Connect IP Socket]
-  void onConnect(String ip) async {
-    TcpSocketConnection socketConnection = TcpSocketConnection(ip, 6464);
-    if (await socketConnection.canConnect(5000, attempts: 3)) {
-      await socketConnection.connect(5000, onRecived, attempts: 3);
-    }
+  void onLock(String ip) async {
+    late IO.Socket socket;
+    socket = IO.io(
+        "http://$ip:6464",
+        OptionBuilder()
+            .setTransports(['websocket']) // for Flutter or Dart VM
+            .disableAutoConnect() // disable auto-connection
+            .setExtraHeaders({'foo': 'bar'}) // optional
+            .build());
+
+    socket.connect();
+    socket.onConnect((data) {
+      log('Connect ${socket.id} $ip');
+      socket.emit("action-pc", "data");
+    });
+    socket.emit("action-pc", 'lock');
     notifyListeners();
   }
 
-  void onRecived() {
+  void onDisconnect() {
+    //socket.disconnect();
     notifyListeners();
   }
 
@@ -27,6 +39,7 @@ class HomeController extends ChangeNotifier {
   List<ModelDevices> get listDevices => _listDevices;
   set listDevices(List<ModelDevices> listDevices) {
     _listDevices = listDevices;
+    notifyListeners();
   }
 
   ///[State Devices]
@@ -55,7 +68,7 @@ class HomeController extends ChangeNotifier {
       numberIp: numberIp.text,
     ));
     state.add(true);
-    visible.add(true);
+    visible.add(false);
     nameDevice.clear();
     numberIp.clear();
     notifyListeners();
