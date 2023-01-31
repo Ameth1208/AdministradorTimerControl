@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:tcp_socket_connection/tcp_socket_connection.dart';
+
 import 'package:timer_control/app/dominio/models/model_devices.dart';
 
 ///CONTROLLER ANDROID
@@ -11,16 +11,14 @@ class HomeController extends ChangeNotifier {
 
   ///[Connect IP Socket]
   void onConnect(String ip) async {
-    TcpSocketConnection socketConnection = TcpSocketConnection(ip, 6464);
-    if (await socketConnection.canConnect(5000, attempts: 3)) {
-      await socketConnection.connect(5000, onRecived, attempts: 3);
-    }
     notifyListeners();
   }
 
   void onRecived() {
     notifyListeners();
   }
+
+  void onSetTime(int i) {}
 
   ///[Acciones visuales]
   List<ModelDevices> _listDevices = [];

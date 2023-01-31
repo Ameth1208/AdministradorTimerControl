@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dart_ipify/dart_ipify.dart';
 import 'package:flutter/material.dart';
 import 'package:process_run/shell_run.dart';
 //import 'package:tcp_socket_connection/tcp_socket_connection.dart';
@@ -12,12 +11,13 @@ class HomeController extends ChangeNotifier {
     printIps();
   }
 
-  String _ipInterna = '';
+  final String _ipInterna = '';
   String get ipInterna => _ipInterna;
 
   void onIpInterna() async {
-    _ipInterna = await Ipify.ipv64();
+    //_ipInterna = await Ipify.ipv64();
     Socket socket = await Socket.connect(_ipInterna, 6464);
+
     notifyListeners();
   }
 

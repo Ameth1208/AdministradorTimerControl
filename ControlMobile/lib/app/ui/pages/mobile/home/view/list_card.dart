@@ -18,14 +18,14 @@ class ListCard extends HookConsumerWidget {
       itemBuilder: (_, i) {
         return CustomCard(
           index: i,
-          color: controller.state[i]
+          color: !controller.state[i]
               ? CustomColors.stateLibre
               : CustomColors.stateLock,
-          visible: controller.state[i],
+          visible: !controller.visible[i],
           ipText: controller.listDevices[i].numberIp,
           text: controller.listDevices[i].nameDevices,
           idTap: (a) {
-            controller.onState(i, controller.state[i]);
+            controller.onVisible(i, controller.visible[i]);
           },
           lock: (i) {},
           time: (i) {
