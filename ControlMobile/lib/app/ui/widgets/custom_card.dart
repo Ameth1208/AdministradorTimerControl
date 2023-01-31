@@ -1,103 +1,67 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:timer_control/app/ui/helpers/global_helpers.dart';
-import 'package:timer_control/app/ui/widgets/global_widgets.dart';
+import 'package:timer_control/app/ui/widgets/custom_container.dart';
+import 'package:timer_control/app/ui/widgets/custom_text_view.dart';
 
 class CustomCard extends StatelessWidget {
   const CustomCard({
     super.key,
     this.text = 'ArCars 1',
-    this.ipText = '192.168.1.100',
-    this.color = CustomColors.stateLibre,
-    this.visible = true,
     required this.index,
-    required this.idTap,
-    required this.unLock,
-    required this.time,
-    required this.lock,
+    required this.tapIndex,
+    this.img = CustomImages.arcade,
+    this.state = 1,
   });
 
   final String text;
-  final String ipText;
-  final Color color;
 
-  final bool visible;
-  final OnTapIndex idTap;
-  final OnTapIndex unLock;
-  final OnTapIndex time;
-  final OnTapIndex lock;
+  final OnTapIndex tapIndex;
   final int index;
+  final String img;
+  final int state;
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        idTap(index);
-      },
-      child: Container(
-        width: context.wp(90),
+      onTap: () => tapIndex(index),
+      child: CustomContainer(
+        margin: EdgeInsets.symmetric(
+            horizontal: context.wp(2), vertical: context.hp(1)),
         padding: EdgeInsets.symmetric(
             horizontal: context.wp(3), vertical: context.hp(2)),
-        margin: EdgeInsets.symmetric(
-            horizontal: context.wp(3), vertical: context.hp(2)),
-        decoration: BoxDecoration(
-          color: CustomColors.white,
-          borderRadius: BorderRadius.circular(context.dp(1)),
-          boxShadow: [
-            BoxShadow(
-              offset: const Offset(2, 2),
-              blurRadius: 12,
-              color: CustomColors.primary.withOpacity(0.05),
-            ),
-          ],
-        ),
+        width: context.wp(45),
+        height: context.hp(20),
+        listColor: const [
+          CustomColors.primary_100,
+          CustomColors.primary,
+        ],
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListTile(
-              contentPadding: EdgeInsets.symmetric(horizontal: context.wp(1)),
-              title: CustomTextView.h2(
-                fontWeight: FontWeight.w800,
-                text: text,
-              ),
-              subtitle: CustomTextView.h3(
-                text: ipText,
-                color: CustomColors.primary_100,
-              ),
-              trailing: StateCard(
-                color: color,
-              ),
-            ),
-            SizedBox(height: context.hp(1)),
-            Visibility(
-              key: ValueKey('$visible'),
-              visible: visible,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  CustomButton(
-                      color: CustomColors.unlock,
-                      onTap: () {
-                        unLock(index);
-                      },
-                      icon: Icons.lock_open_rounded),
-                  CustomButton(
-                    color: CustomColors.time,
-                    onTap: () {
-                      time(index);
-                    },
-                    icon: CupertinoIcons.clock,
-                  ),
-                  CustomButton(
-                    color: CustomColors.stateLock,
-                    onTap: () {
-                      lock(index);
-                    },
-                    icon: Icons.lock_outline,
-                  ),
-                ],
+            CustomContainer(
+              width: context.wp(15),
+              height: context.wp(15),
+              radius: context.dp(3),
+              padding: EdgeInsets.all(context.dp(1)),
+              listColor: const [
+                CustomColors.primary,
+                CustomColors.primary_100,
+              ],
+              child: Image.asset(
+                img,
+                fit: BoxFit.contain,
               ),
             ),
-            SizedBox(height: context.hp(1)),
+            SizedBox(height: context.hp(3)),
+            Row(
+              children: [
+                CustomTextView.h2(
+                  text: text,
+                ),
+                const Spacer(),
+                StateCard(
+                  state: state,
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -106,18 +70,34 @@ class CustomCard extends StatelessWidget {
 }
 
 class StateCard extends StatelessWidget {
-  const StateCard({super.key, required this.color});
-  final Color color;
+  const StateCard({
+    super.key,
+    this.state = 1,
+  });
+
+  final int state;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: context.dp(2),
-      height: context.dp(2),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(
-            context.dp(1),
-          ),
-          color: color),
+    final color = state == 0
+        ? [CustomColors.gradientActive, CustomColors.gradientActive_100]
+        : state == 1
+            ? [CustomColors.gradientOcup, CustomColors.gradientOcup_100]
+            : [CustomColors.gradientLock, CustomColors.gradientLock_100];
+
+    return CustomContainer(
+      width: context.wp(8),
+      height: context.wp(8),
+      radius: context.dp(3),
+      listColor: const [
+        CustomColors.primary_100,
+        CustomColors.primary,
+      ],
+      child: CustomContainer(
+        radius: context.dp(3),
+        width: context.wp(5),
+        height: context.wp(5),
+        listColor: color,
+      ),
     );
   }
 }

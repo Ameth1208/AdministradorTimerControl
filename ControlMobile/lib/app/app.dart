@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         textTheme: GoogleFonts.poppinsTextTheme(),
       ),
-      home: const HomeMobile(),
+      home: const NavigatorInit(),
     );
   }
 }

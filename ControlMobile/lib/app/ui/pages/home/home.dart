@@ -1,27 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:timer_control/app/ui/helpers/global_helpers.dart';
 import 'controller/global_controller.dart';
-import 'view/list_card.dart';
 import 'package:timer_control/app/ui/widgets/global_widgets.dart';
+
+import 'view/list_card.dart';
 
 class HomeMobile extends HookConsumerWidget {
   const HomeMobile({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(homeProvider);
-    return SafeArea(
-      child: Scaffold(
-        floatingActionButton: CustomButton(
-          onTap: () {
-            showAlertDialog(context, ref);
-          },
-        ),
-        body: Container(
-          alignment: Alignment.center,
-          child: const ListCard(),
-        ),
+    final ctlr = ref.watch(homeProvider);
+    return const SafeArea(
+      child: Expanded(
+        child: ListCard(),
       ),
     );
   }

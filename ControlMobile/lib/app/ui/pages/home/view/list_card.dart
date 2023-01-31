@@ -1,8 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:timer_control/app/ui/helpers/custom_colors.dart';
-import '../controller/global_controller.dart';
 import 'package:timer_control/app/ui/widgets/custom_card.dart';
+import '../controller/global_controller.dart';
 
 class ListCard extends HookConsumerWidget {
   const ListCard({
@@ -11,29 +12,25 @@ class ListCard extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(homeProvider);
-    return ListView.builder(
+    final ctl = ref.watch(homeProvider);
+
+    return ListView(
       physics: const BouncingScrollPhysics(),
-      itemCount: controller.listDevices.length,
-      itemBuilder: (_, i) {
-        return CustomCard(
-          index: i,
-          color: !controller.state[i]
-              ? CustomColors.stateLibre
-              : CustomColors.stateLock,
-          visible: !controller.visible[i],
-          ipText: controller.listDevices[i].numberIp,
-          text: controller.listDevices[i].nameDevices,
-          idTap: (a) {
-            controller.onVisible(i, controller.visible[i]);
-          },
-          lock: (i) {},
-          time: (i) {
-            controller.onConnect(controller.listDevices[i].numberIp);
-          },
-          unLock: (i) {},
-        );
-      },
+      children: [
+        Wrap(
+          alignment: WrapAlignment.start,
+          runAlignment: WrapAlignment.center,
+          children: [
+            for (int i = 0; i < 10; i++)
+              CustomCard(
+                index: 0,
+                text: 'ArCars ${i + 1}',
+                state: Random().nextInt(3),
+                tapIndex: (i) {},
+              )
+          ],
+        ),
+      ],
     );
   }
 }

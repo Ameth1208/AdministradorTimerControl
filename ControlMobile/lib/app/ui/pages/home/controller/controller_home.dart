@@ -49,11 +49,8 @@ class HomeController extends ChangeNotifier {
     log(numberIp.text);
 
     listDevices.add(ModelDevices(
-      nameDevices: nameDevice.text,
-      numberIp: numberIp.text,
-    ));
-    state.add(true);
-    visible.add(true);
+        name: nameDevice.text, numberIp: numberIp.text, state: 0, type: 1));
+
     nameDevice.clear();
     numberIp.clear();
     notifyListeners();
