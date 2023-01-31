@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '/app/ui/pages/selector_devices.dart';
+
+import 'ui/pages/app_mobile.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         textTheme: GoogleFonts.poppinsTextTheme(),
       ),
-      home: const SelectorDevices(),
+      home: const HomeMobile(),
     );
   }
 }
