@@ -12,11 +12,8 @@ class PcControls {
                 win32: 'rundll32.exe user32.dll,LockWorkStation',
             },
             unlock: {
-                win32 : 'rundll32.exe user32.dll,UnlockWindowStation',
+                win32 : 'python archivo',
                 //win32: 'unlocker_keyboard.exe',
-            },
-            begin: {
-                win32: 'cd',
             },
             shutdown : {
                 win32 : 'shutdown -s -t -f 0'
