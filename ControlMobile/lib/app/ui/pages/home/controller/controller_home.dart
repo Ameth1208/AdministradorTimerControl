@@ -1,7 +1,5 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
-
 import 'package:timer_control/app/dominio/models/model_devices.dart';
 
 ///CONTROLLER ANDROID
@@ -14,7 +12,8 @@ class HomeController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onRecived() {
+  void onDisconnect() {
+    //socket.disconnect();
     notifyListeners();
   }
 
@@ -25,6 +24,7 @@ class HomeController extends ChangeNotifier {
   List<ModelDevices> get listDevices => _listDevices;
   set listDevices(List<ModelDevices> listDevices) {
     _listDevices = listDevices;
+    notifyListeners();
   }
 
   ///[State Devices]

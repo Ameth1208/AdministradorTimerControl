@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:timer_control/app/ui/helpers/global_helpers.dart';
 
 class CustomButton extends StatelessWidget {
