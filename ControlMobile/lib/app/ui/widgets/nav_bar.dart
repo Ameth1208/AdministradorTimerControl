@@ -27,11 +27,11 @@ class CustomNavBar extends HookConsumerWidget {
           text: '   Añadir',
           iconColor: CustomColors.white,
         ),
-        GButton(
-          icon: Icons.person,
-          text: '   Usuario',
-          iconColor: CustomColors.white,
-        ),
+        // GButton(
+        //   icon: Icons.person,
+        //   text: '   Usuario',
+        //   iconColor: CustomColors.white,
+        // ),
       ],
     );
   }

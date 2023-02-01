@@ -31,13 +31,11 @@ class PcControls {
             callback(true, false, false);
         } else {
             const os = this._getOs();
-            console.log(command);
-            console.log(os);
-
+            
             try {
                 const cmd = this._commands[command][os];
-                console.log(cmd);
-                cp.exec(cmd, (err, stdout, stderr) => callback(err, stdout, stderr));
+                //console.log(cmd);
+                cp.exec(cmd);
             } catch (e) {
                 callback(new Error('Unknown command or OS'));
             }

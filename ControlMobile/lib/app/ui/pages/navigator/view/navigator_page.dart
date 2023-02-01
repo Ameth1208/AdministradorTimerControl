@@ -13,22 +13,13 @@ class NavigatorPage extends HookConsumerWidget {
       child: Scaffold(
         backgroundColor: CustomColors.background,
         bottomNavigationBar: const CustomNavBar(),
-        body: Container(
-          child: Column(
-            children: [
-              const CustomAppBar(),
-              Expanded(
-                child: PageView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  controller: ctl.pageController,
-                  children: const [
-                    HomeMobile(),
-                    AddItemList(),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        body: PageView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: ctl.pageController,
+          children: const [
+            HomeMobile(),
+            AddItemList(),
+          ],
         ),
       ),
     );

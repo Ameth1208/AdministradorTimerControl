@@ -10,12 +10,16 @@ class ModelDevices {
     required this.name,
     required this.numberIp,
     required this.state,
+    required this.colorCard,
+    required this.time,
   });
 
-  final int type;
+  final String type;
   final String name;
   final String numberIp;
   final int state;
+  final int colorCard;
+  final int time;
 
   factory ModelDevices.fromJson(String str) =>
       ModelDevices.fromMap(json.decode(str));
@@ -27,6 +31,8 @@ class ModelDevices {
         name: json["name"],
         numberIp: json["numberIp"],
         state: json["state"],
+        colorCard: json["colorCard"],
+        time: json["time"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -34,5 +40,7 @@ class ModelDevices {
         "name": name,
         "numberIp": numberIp,
         "state": state,
+        "colorCard": colorCard,
+        "time": time,
       };
 }

@@ -18,16 +18,24 @@ class CustomTextField extends StatelessWidget {
       keyboardType: textInputType,
       controller: controller,
       decoration: InputDecoration(
-        labelText: hint,
-        labelStyle: TextStyle(
-          color: CustomColors.primary_100,
+        hintText: hint,
+        hintStyle: TextStyle(
+          color: CustomColors.white,
           fontSize: context.dp(fontSize),
           fontWeight: FontWeight.w700,
         ),
-        border: const OutlineInputBorder(),
+        enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: CustomColors.white),
+            borderRadius: BorderRadius.circular(context.dp(1))),
+        focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: CustomColors.white),
+            borderRadius: BorderRadius.circular(context.dp(1))),
+        border: OutlineInputBorder(
+            borderSide: const BorderSide(color: CustomColors.white),
+            borderRadius: BorderRadius.circular(context.dp(1))),
       ),
       style: TextStyle(
-          color: CustomColors.primary,
+          color: CustomColors.white,
           fontSize: context.dp(fontSize),
           fontWeight: FontWeight.w700),
     );

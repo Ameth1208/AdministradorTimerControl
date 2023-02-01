@@ -14,14 +14,17 @@ wss.on('connection', function(ws, res) {
     ws.on('message', message => {
         var dataString = message.toString();
         console.log(dataString);
-        if (command === 'timeUp') {
+        if (dataString === 'timeUp') {
            ws.send("timeInit");
-            setTimeout(()=>{
-                pc.run('lock', (err) => {
-                    res.send({error: err != undefined, msg: 'Error executing the command'});
-                });            
-            },600000);
+           pc.run('lock');    
+            // setTimeout(()=>{
+            //     pc.run('lock');         
+            //     ws.send('Error executing the command');        
+            // },60000);
                         
         } 
+        else if(dataString === 'consulta'){
+            ws.send("Datos devueltos");
+        }
     })
 })
