@@ -5,6 +5,14 @@ class CustomAppBar extends HookConsumerWidget {
   const CustomAppBar({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final size = MediaQuery.of(context).size;
+    final bool visible;
+    if (size.width < size.height) {
+      visible = true;
+    } else {
+      visible = false;
+    }
+
     return Container(
       width: context.wd,
       color: Colors.transparent,
@@ -15,10 +23,10 @@ class CustomAppBar extends HookConsumerWidget {
           Row(
             children: [
               CustomContainer(
-                width: context.wp(15),
-                height: context.wp(15),
-                radius: context.dp(10),
-                padding: EdgeInsets.all(context.wp(3)),
+                width: context.wp(visible ? 15 : 5),
+                height: context.wp(visible ? 15 : 5),
+                radius: context.dp(visible ? 10 : 1),
+                padding: EdgeInsets.all(context.wp(visible ? 3 : 1)),
                 listColor: const [
                   CustomColors.primary_100,
                   CustomColors.primary,
@@ -26,11 +34,13 @@ class CustomAppBar extends HookConsumerWidget {
                 child: SvgPicture.asset(CustomIcons.logo),
               ),
               const Spacer(),
+              const CustomTextView.h2(text: 'ArGame'),
+              const Spacer(),
               CustomContainer(
-                width: context.wp(15),
-                height: context.wp(15),
-                radius: context.dp(1),
-                padding: EdgeInsets.all(context.wp(3)),
+                width: context.wp(visible ? 15 : 5),
+                height: context.wp(visible ? 15 : 5),
+                radius: context.dp(visible ? 10 : 1),
+                padding: EdgeInsets.all(context.wp(visible ? 3 : 1)),
                 listColor: const [
                   CustomColors.primary_100,
                   CustomColors.primary,
@@ -42,10 +52,6 @@ class CustomAppBar extends HookConsumerWidget {
               ),
             ],
           ),
-          SizedBox(height: context.hp(2)),
-          const CustomTextView.h1(
-            text: 'Welcome to ArGame',
-          )
         ],
       ),
     );

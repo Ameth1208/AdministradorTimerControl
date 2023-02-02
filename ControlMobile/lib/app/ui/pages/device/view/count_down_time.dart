@@ -7,23 +7,26 @@ class CustomCountDown extends HookConsumerWidget {
   const CustomCountDown({
     super.key,
     this.i = 0,
+    this.width = 30,
   });
   final int i;
+  final double width;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ctl = ref.watch(addDevicesProvider);
     final cl = ref.watch(devicesProvider);
+
     return CircularCountDownTimer(
       controller: cl.countController,
       backgroundColor:
           listCardColor[ctl.listDevices[i].colorCard][0].withOpacity(0.8),
       textStyle: TextStyle(
           color: CustomColors.white,
-          fontSize: context.dp(5),
+          fontSize: context.dp(2),
           fontWeight: FontWeight.w900),
-      strokeWidth: context.dp(3),
-      width: context.wp(50),
-      height: context.wp(50),
+      strokeWidth: context.dp(2),
+      width: context.wp(width),
+      height: context.wp(width),
       duration: 10 * 1,
       autoStart: false,
       strokeCap: StrokeCap.round,
@@ -34,13 +37,13 @@ class CustomCountDown extends HookConsumerWidget {
       onComplete: () {
         cl.onLock(ctl.listDevices[i].numberIp);
         cl.state = 2;
-        ctl.listDevices[i].state == cl.state;
-
+        ctl.onState(i, cl.state);
         cl.countController.reset();
       },
       onChange: (time) {
         //ctl.listDevices[i].time = int.parse(time);
         //log(time);
+        //log("${DateTime.now().minute}:${DateTime.now().second}");
       },
       ringColor:
           listCardColor[ctl.listDevices[i].colorCard][0].withOpacity(0.5),

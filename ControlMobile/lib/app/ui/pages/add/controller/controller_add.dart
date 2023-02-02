@@ -55,4 +55,9 @@ class AddDevicesController extends ChangeNotifier {
     numberIp.clear();
     notifyListeners();
   }
+
+  Future<void> removeDevice(int i) async {
+    listDevices.removeAt(i);
+    notifyListeners();
+  }
 }

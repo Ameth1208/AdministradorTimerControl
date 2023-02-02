@@ -23,6 +23,7 @@ class DevicesController extends ChangeNotifier {
   void onStop(String ip) {
     countController.pause();
     countController.reset();
+    socketEvent("timeUp", ip);
   }
 
   ///[unlock]

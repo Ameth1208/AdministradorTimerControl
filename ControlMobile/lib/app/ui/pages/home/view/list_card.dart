@@ -12,27 +12,40 @@ class ListCard extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ctl = ref.watch(addDevicesProvider);
-
+    final size = MediaQuery.of(context).size;
+    final bool visible;
+    if (size.width < size.height) {
+      visible = true;
+    } else {
+      visible = false;
+    }
     return ListView(
       physics: const BouncingScrollPhysics(),
       children: [
-        Wrap(
-          alignment: WrapAlignment.start,
-          runAlignment: WrapAlignment.center,
-          children: [
-            for (int i = 0; i < ctl.listDevices.length; i++)
-              CustomCard(
-                index: i,
-                text: ctl.listDevices[i].name,
-                state: ctl.state[i],
-                img: ctl.listDevices[i].type,
-                color: ctl.listDevices[i].colorCard,
-                tapIndex: (i) {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => DeviceView(i: i)));
-                },
-              )
-          ],
+        Visibility(
+          visible: !ctl.listDevices.isNotEmpty ? false : true,
+          child: Wrap(
+            alignment: WrapAlignment.start,
+            runAlignment: WrapAlignment.center,
+            children: [
+              for (int i = 0; i < ctl.listDevices.length; i++)
+                CustomCard(
+                  width: visible ? 45 : 20,
+                  height: visible ? 20 : 40,
+                  index: i,
+                  text: ctl.listDevices[i].name,
+                  state: ctl.state[i],
+                  img: ctl.listDevices[i].type,
+                  color: ctl.listDevices[i].colorCard,
+                  tapIndex: (i) {
+                    ctl.listDevices.isNotEmpty
+                        ? Navigator.push(context,
+                            MaterialPageRoute(builder: (_) => DeviceView(i: i)))
+                        : null;
+                  },
+                )
+            ],
+          ),
         ),
       ],
     );

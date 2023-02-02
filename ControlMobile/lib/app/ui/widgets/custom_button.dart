@@ -14,12 +14,19 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final bool visible;
+    if (size.width < size.height) {
+      visible = true;
+    } else {
+      visible = false;
+    }
     return InkWell(
       onTap: onTap,
       child: CustomContainer(
         listColor: const [CustomColors.button, CustomColors.button_100],
         width: context.wp(80),
-        height: context.hp(5),
+        height: context.hp(!visible ? 10 : 6),
         radius: context.dp(5),
         child: CustomTextView.h3(
           text: text,

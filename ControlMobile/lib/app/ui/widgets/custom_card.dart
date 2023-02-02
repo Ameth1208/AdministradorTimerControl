@@ -11,26 +11,38 @@ class CustomCard extends StatelessWidget {
     this.img = CustomImages.arcade,
     this.state = 1,
     this.color = 0,
+    this.width = 45,
+    this.height = 20,
   });
 
   final String text;
 
   final OnTapIndex tapIndex;
+
   final int index;
   final String img;
+  final double width, height;
   final int state;
   final int color;
   @override
   Widget build(BuildContext context) {
+    ///Size
+    final size = MediaQuery.of(context).size;
+    final bool visible;
+    if (size.width < size.height) {
+      visible = true;
+    } else {
+      visible = false;
+    }
     return InkWell(
       onTap: () => tapIndex(index),
       child: CustomContainer(
         margin: EdgeInsets.symmetric(
-            horizontal: context.wp(2), vertical: context.hp(1)),
+            horizontal: context.wp(visible ? 2 : 2), vertical: context.hp(1)),
         padding: EdgeInsets.symmetric(
-            horizontal: context.wp(3), vertical: context.hp(2)),
-        width: context.wp(45),
-        height: context.hp(20),
+            horizontal: context.wp(visible ? 3 : 2), vertical: context.hp(2)),
+        width: context.wp(width),
+        height: context.hp(height),
         listColor: listCardColor[color],
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,13 +51,13 @@ class CustomCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CustomContainer(
-                  width: context.wp(15),
-                  height: context.wp(15),
-                  radius: context.dp(3),
+                  width: context.wp(visible ? 15 : 7.5),
+                  height: context.wp(visible ? 15 : 7.5),
+                  radius: context.dp(visible ? 3 : 1.5),
                   padding: EdgeInsets.all(context.dp(1)),
                   listColor: [
-                    CustomColors.primary.withOpacity(0.2),
                     CustomColors.white.withOpacity(0.2),
+                    CustomColors.primary.withOpacity(0.2),
                   ],
                   child: Image.asset(
                     img,
@@ -78,6 +90,15 @@ class StateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ///Size
+    final size = MediaQuery.of(context).size;
+    final bool visible;
+    if (size.width < size.height) {
+      visible = true;
+    } else {
+      visible = false;
+    }
+
     final color = state == 0
         ? [CustomColors.gradientActive_100, CustomColors.gradientActive]
         : state == 1
@@ -85,19 +106,20 @@ class StateCard extends StatelessWidget {
             : [CustomColors.gradientLock_100, CustomColors.gradientLock];
 
     return CustomContainer(
-      width: context.wp(8),
-      height: context.wp(8),
+      width: context.wp(visible ? 8 : 4),
+      height: context.wp(visible ? 8 : 4),
       radius: context.dp(3),
       listColor: [
-        CustomColors.primary.withOpacity(0.2),
         CustomColors.white.withOpacity(0.2),
+        CustomColors.primary.withOpacity(0.2),
+
         // listCardColor[colorState][1],
         // listCardColor[colorState][0],
       ],
       child: CustomContainer(
         radius: context.dp(3),
-        width: context.wp(5),
-        height: context.wp(5),
+        width: context.wp(visible ? 5 : 2.5),
+        height: context.wp(visible ? 5 : 2.5),
         listColor: color,
       ),
     );

@@ -9,10 +9,22 @@ class NavigatorPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ctl = ref.watch(navigatorProvider);
+
+    final size = MediaQuery.of(context).size;
+    final bool visible;
+    if (size.width < size.height) {
+      visible = true;
+    } else {
+      visible = false;
+    }
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: CustomColors.background,
-        bottomNavigationBar: const CustomNavBar(),
+        floatingActionButton: const CustomNavBar(),
+        floatingActionButtonLocation: visible
+            ? FloatingActionButtonLocation.centerFloat
+            : FloatingActionButtonLocation.endFloat,
         body: PageView(
           physics: const NeverScrollableScrollPhysics(),
           controller: ctl.pageController,

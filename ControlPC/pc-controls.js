@@ -20,7 +20,6 @@ class PcControls {
             },
         };
     }
-
     _getOs() {
         return process.platform
     };

@@ -13,15 +13,16 @@ const wss = new Server({ server });
 wss.on('connection', function(ws, res) {
     ws.on('message', message => {
         var dataString = message.toString();
+        
         console.log(dataString);
         if (dataString === 'timeUp') {
            ws.send("timeInit");
-           pc.run('lock');    
-            // setTimeout(()=>{
-            //     pc.run('lock');         
-            //     ws.send('Error executing the command');        
-            // },60000);
-                        
+           //pc.run('lock');    
+            setTimeout(()=>{
+                pc.run('lock');         
+                      
+            },10000);
+            ws.send('Bloqueado');          
         } 
         else if(dataString === 'consulta'){
             ws.send("Datos devueltos");
