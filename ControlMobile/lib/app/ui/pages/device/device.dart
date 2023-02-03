@@ -1,5 +1,6 @@
 import 'package:timer_control/app/ui/helpers/global_helpers.dart';
 import 'package:timer_control/app/ui/pages/add/controller/global_controller.dart';
+import 'package:timer_control/app/ui/pages/home/controller/global_controller.dart';
 
 import 'package:timer_control/app/ui/widgets/global_widgets.dart';
 
@@ -32,8 +33,8 @@ class DeviceView extends HookConsumerWidget {
         icon: LineIcons.unlock,
         color: CustomColors.button,
         onTap: () {
-          socket.state = 0;
-          ctl.onState(i, socket.state);
+          ctl.onChangeTime(i, ctl.listDevices[i].time);
+          ctl.onState(i, 0);
         },
       ),
       SizedBox(height: context.hp(5)),
@@ -43,8 +44,8 @@ class DeviceView extends HookConsumerWidget {
         color: CustomColors.color_30,
         onTap: () {
           socket.onStart();
-          socket.state = 1;
-          ctl.onState(i, socket.state);
+          ctl.onChangeTime(i, ctl.listDevices[i].time);
+          ctl.onState(i, 1);
         },
       ),
       SizedBox(height: context.hp(5)),
@@ -54,11 +55,13 @@ class DeviceView extends HookConsumerWidget {
         icon: LineIcons.stop,
         onTap: () {
           socket.onStop(ctl.listDevices[i].numberIp);
-          socket.state = 2;
-          ctl.onState(i, socket.state);
+          ctl.onChangeTime(i, ctl.listDevices[i].time);
+          ctl.onState(i, 2);
         },
       ),
     ];
+
+    final home = ref.watch(homeProvider);
 
     return SafeArea(
       child: Scaffold(
@@ -66,6 +69,17 @@ class DeviceView extends HookConsumerWidget {
           elevation: 0,
           backgroundColor: Colors.transparent,
           title: CustomTextView.h2(text: ctl.listDevices[i].name),
+          leading: InkWell(
+            child: Icon(
+              Icons.arrow_back,
+              color: CustomColors.white,
+              size: context.dp(2.5),
+            ),
+            onTap: () {
+              home.onTimeChange();
+              Navigator.pop(context);
+            },
+          ),
           centerTitle: true,
           actions: const [
             // InkWell(

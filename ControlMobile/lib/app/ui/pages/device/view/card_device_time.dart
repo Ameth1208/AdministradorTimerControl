@@ -37,7 +37,7 @@ class CardDeviceView extends HookConsumerWidget {
                   right: context.wp(1),
                   top: context.hp(1),
                   child: StateCard(
-                    state: ctl.state[i],
+                    state: ctl.listDevices[i].state,
                   ),
                 ),
               ],

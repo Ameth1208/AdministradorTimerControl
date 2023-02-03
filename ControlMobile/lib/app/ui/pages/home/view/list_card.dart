@@ -34,7 +34,7 @@ class ListCard extends HookConsumerWidget {
                   height: visible ? 20 : 40,
                   index: i,
                   text: ctl.listDevices[i].name,
-                  state: ctl.state[i],
+                  state: ctl.listDevices[i].state,
                   img: ctl.listDevices[i].type,
                   color: ctl.listDevices[i].colorCard,
                   tapIndex: (i) {

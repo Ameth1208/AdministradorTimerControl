@@ -19,14 +19,12 @@ class AddDevicesController extends ChangeNotifier {
     notifyListeners();
   }
 
-  final List<int> _state = [];
-  List<int> get state => _state;
   void onState(int i, int t) {
-    _state[i] = t;
+    listDevices[i] = listDevices[i].copyWith(state: t);
     notifyListeners();
   }
 
-  ///[Position Image]
+  ///[Position Image]tim
   int _type = 0;
   int get type => _type;
   set type(int type) {
@@ -47,10 +45,14 @@ class AddDevicesController extends ChangeNotifier {
       colorCard: Random().nextInt(listCardColor.length),
 
       ///time minutos
-      time: 60,
+      time: 300,
+      changeTime: 300,
+
+      ///
+      horaStart: 0,
+      horaEnd: 0,
     ));
 
-    state.add(0);
     name.clear();
     numberIp.clear();
     notifyListeners();
@@ -59,5 +61,35 @@ class AddDevicesController extends ChangeNotifier {
   Future<void> removeDevice(int i) async {
     listDevices.removeAt(i);
     notifyListeners();
+  }
+
+  int _relog = 5;
+  int get relog => _relog;
+  set relog(int relog) {
+    _relog = relog;
+    notifyListeners();
+  }
+
+  void onTimeUp(int i) {
+    _relog += 5;
+    listDevices[i] = listDevices[i].copyWith(time: relog * 60);
+    listDevices[i] = listDevices[i].copyWith(changeTime: relog * 60);
+    notifyListeners();
+  }
+
+  void onTimeDown(int i) {
+    if (relog > 1) {
+      _relog -= 5;
+      listDevices[i] = listDevices[i].copyWith(time: relog * 60);
+      listDevices[i] = listDevices[i].copyWith(changeTime: relog * 60);
+    }
+    notifyListeners();
+  }
+
+  void onChangeTime(int i, int time) {
+    listDevices[i] =
+        listDevices[i].copyWith(changeTime: listDevices[i].time - time);
+    //print(listDevices[i].changeTime);
+//    notifyListeners();
   }
 }

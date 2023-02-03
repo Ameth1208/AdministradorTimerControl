@@ -10,6 +10,7 @@ class PcControls {
         this._commands = {
             lock: {
                 win32: 'rundll32.exe user32.dll,LockWorkStation',
+                
             },
             unlock: {
                 win32 : 'python archivo',

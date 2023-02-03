@@ -5,12 +5,7 @@ import 'package:web_socket_channel/io.dart';
 class DevicesController extends ChangeNotifier {
   CountDownController countController = CountDownController();
 
-  int _state = 0;
-  int get state => _state;
-  set state(int state) {
-    _state = state;
-    notifyListeners();
-  }
+  final DateTime dateTime = DateTime.now();
 
   void onStart() {
     countController.start();
@@ -21,8 +16,9 @@ class DevicesController extends ChangeNotifier {
   }
 
   void onStop(String ip) {
-    countController.pause();
     countController.reset();
+    //countController.pause();
+
     socketEvent("timeUp", ip);
   }
 

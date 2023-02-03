@@ -17,11 +17,11 @@ wss.on('connection', function(ws, res) {
         console.log(dataString);
         if (dataString === 'timeUp') {
            ws.send("timeInit");
-           //pc.run('lock');    
-            setTimeout(()=>{
-                pc.run('lock');         
+           pc.run('lock');    
+            // setTimeout(()=>{
+            //     pc.run('lock');         
                       
-            },10000);
+            // },10000);
             ws.send('Bloqueado');          
         } 
         else if(dataString === 'consulta'){
@@ -29,3 +29,5 @@ wss.on('connection', function(ws, res) {
         }
     })
 })
+
+

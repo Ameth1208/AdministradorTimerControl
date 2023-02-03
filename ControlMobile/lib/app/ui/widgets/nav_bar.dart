@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:timer_control/app/ui/helpers/global_helpers.dart';
 import 'package:timer_control/app/ui/pages/navigator/controller/global_controller.dart';
 import 'package:timer_control/app/ui/widgets/custom_text_view.dart';
@@ -25,8 +23,8 @@ class CustomNavBar extends HookConsumerWidget {
 
     return Container(
         padding: EdgeInsets.all(context.dp(0.5)),
-        height: context.hp(visible ? 10 : 25),
-        width: context.wp(visible ? 30 : 6),
+        height: context.hp(visible ? 8 : 35),
+        width: context.wp(visible ? 40 : 6),
         alignment: Alignment.center,
         decoration: BoxDecoration(
             color: CustomColors.background_100,
@@ -40,10 +38,11 @@ class CustomNavBar extends HookConsumerWidget {
                   CustomNavBarItem(
                     text: listWidget[i][0],
                     icon: listWidget[i][1],
+                    index: i,
                     onTap: (i) {
-                      log("$i");
+                      ctl.onPage(i);
                     },
-                  ),
+                  )
               ]),
           visible: !visible,
           child: Column(
@@ -87,7 +86,7 @@ class CustomNavBarItem extends HookConsumerWidget {
         onTap(index);
       },
       child: Container(
-        height: context.hp(10),
+        //height: context.hp(10),
         width: context.wp(10),
         color: Colors.transparent,
         child: Column(
