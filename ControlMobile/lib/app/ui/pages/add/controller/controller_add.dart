@@ -45,12 +45,12 @@ class AddDevicesController extends ChangeNotifier {
       colorCard: Random().nextInt(listCardColor.length),
 
       ///time minutos
-      time: 300,
-      changeTime: 300,
+      time: 0,
+      changeTime: 0,
 
       ///
-      horaStart: 0,
-      horaEnd: 0,
+      horaStart: "00:00",
+      horaEnd: "00:00",
     ));
 
     name.clear();
@@ -63,7 +63,7 @@ class AddDevicesController extends ChangeNotifier {
     notifyListeners();
   }
 
-  int _relog = 5;
+  int _relog = 0;
   int get relog => _relog;
   set relog(int relog) {
     _relog = relog;

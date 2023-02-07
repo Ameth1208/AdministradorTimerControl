@@ -24,8 +24,8 @@ class ModelDevices {
   final int colorCard;
   final int time;
   final int changeTime;
-  final int horaStart;
-  final int horaEnd;
+  final String horaStart;
+  final String horaEnd;
 
   ModelDevices copyWith({
     String? type,
@@ -35,8 +35,8 @@ class ModelDevices {
     int? colorCard,
     int? time,
     int? changeTime,
-    int? horaStart,
-    int? horaEnd,
+    String? horaStart,
+    String? horaEnd,
   }) =>
       ModelDevices(
         type: type ?? this.type,

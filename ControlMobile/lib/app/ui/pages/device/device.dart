@@ -43,7 +43,7 @@ class DeviceView extends HookConsumerWidget {
         icon: LineIcons.play,
         color: CustomColors.color_30,
         onTap: () {
-          socket.onStart();
+          socket.onStart(i);
           ctl.onChangeTime(i, ctl.listDevices[i].time);
           ctl.onState(i, 1);
         },
@@ -55,6 +55,7 @@ class DeviceView extends HookConsumerWidget {
         icon: LineIcons.stop,
         onTap: () {
           socket.onStop(ctl.listDevices[i].numberIp);
+          socket.countController.reset();
           ctl.onChangeTime(i, ctl.listDevices[i].time);
           ctl.onState(i, 2);
         },
