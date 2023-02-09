@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:timer_control/app/dominio/data/data_glogal.dart';
 import 'package:timer_control/app/dominio/models/model_devices.dart';
 import 'package:timer_control/app/ui/helpers/custom_assets.dart';
 import 'package:timer_control/app/ui/helpers/custom_colors.dart';
@@ -16,6 +17,11 @@ class AddDevicesController extends ChangeNotifier {
   TextEditingController name = TextEditingController();
   TextEditingController numberIp = TextEditingController();
 
+  //List Map
+  final List<Map<String, dynamic>> _listMap = [];
+  List<Map<String, dynamic>> get listMap => _listMap;
+
+  ///Lista Modelo
   List<ModelDevices> _listDevices = [];
   List<ModelDevices> get listDevices => _listDevices;
   set listDevices(List<ModelDevices> listDevices) {
@@ -23,8 +29,14 @@ class AddDevicesController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onState(int i, int t) {
-    listDevices[i] = listDevices[i].copyWith(state: t);
+  void onState(int i, int t) async {
+    final local = LocalStorage();
+    final value = await local.get();
+    final id = listDevices[i].id;
+    final isValue = value?.keys.contains(id);
+    value![id] = listDevices[i].copyWith(state: t).toMap();
+    local.save(value);
+
     notifyListeners();
   }
 
@@ -37,11 +49,9 @@ class AddDevicesController extends ChangeNotifier {
   }
 
   ///[Añadir dispositivo]
-  void onAdd(int p) {
-    // log(nameDevice.text);
-    // log(numberIp.text);
-
-    listDevices.add(ModelDevices(
+  void onAdd(int p) async {
+    final id = (DateTime.now().toIso8601String());
+    final model = ModelDevices(
       name: name.text,
       numberIp: numberIp.text,
       state: 0,
@@ -53,9 +63,22 @@ class AddDevicesController extends ChangeNotifier {
       changeTime: 600,
 
       ///
-      horaStart: "00:00",
-      horaEnd: "00:00",
-    ));
+      horaStart: "00:00:00",
+      horaEnd: "00:00:00",
+      id: id,
+    );
+
+    listDevices.add(model);
+    Map<String, dynamic> map = {};
+
+    _listMap.add(model.toMap());
+    final local = LocalStorage();
+    final value = await local.get();
+    map = {...value ?? {}};
+
+    map[id] = model.toMap();
+
+    local.save(map);
 
     name.clear();
     numberIp.clear();
@@ -90,9 +113,15 @@ class AddDevicesController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onChangeTime(int i, int time) {
-    listDevices[i] =
-        listDevices[i].copyWith(changeTime: listDevices[i].time - time);
+  void onChangeTime(int i, int time) async {
+    final local = LocalStorage();
+    final value = await local.get();
+    final id = listDevices[i].id;
+    final isValue = value?.keys.contains(id);
+    value![id] =
+        listDevices[i].copyWith(changeTime: listDevices[i].time - time).toMap();
+    local.save(value);
+
     //print(listDevices[i].changeTime);
 //    notifyListeners();
   }

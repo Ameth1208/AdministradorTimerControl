@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:timer_control/app/ui/pages/device/device.dart';
-import '../../add/controller/global_controller.dart';
+import 'package:timer_control/app/ui/pages/home/controller/global_controller.dart';
 import 'package:timer_control/app/ui/widgets/custom_card.dart';
 
 class ListCard extends HookConsumerWidget {
@@ -11,7 +11,7 @@ class ListCard extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ctl = ref.watch(addDevicesProvider);
+    final ctl = ref.watch(homeProvider);
     final size = MediaQuery.of(context).size;
     final bool visible;
     if (size.width < size.height) {
@@ -19,26 +19,27 @@ class ListCard extends HookConsumerWidget {
     } else {
       visible = false;
     }
+
     return ListView(
       physics: const BouncingScrollPhysics(),
       children: [
         Visibility(
-          visible: !ctl.listDevices.isNotEmpty ? false : true,
+          visible: !ctl.listDataLocal.isNotEmpty ? false : true,
           child: Wrap(
             alignment: WrapAlignment.start,
             runAlignment: WrapAlignment.center,
             children: [
-              for (int i = 0; i < ctl.listDevices.length; i++)
+              for (int i = 0; i < ctl.listDataLocal.length; i++)
                 CustomCard(
                   width: visible ? 45 : 20,
                   height: visible ? 20 : 40,
                   index: i,
-                  text: ctl.listDevices[i].name,
-                  state: ctl.listDevices[i].state,
-                  img: ctl.listDevices[i].type,
-                  color: ctl.listDevices[i].colorCard,
+                  text: ctl.listDataLocal[i].name,
+                  state: ctl.listDataLocal[i].state,
+                  img: ctl.listDataLocal[i].type,
+                  color: ctl.listDataLocal[i].colorCard,
                   tapIndex: (i) {
-                    ctl.listDevices.isNotEmpty
+                    ctl.listDataLocal.isNotEmpty
                         ? Navigator.push(context,
                             MaterialPageRoute(builder: (_) => DeviceView(i: i)))
                         : null;

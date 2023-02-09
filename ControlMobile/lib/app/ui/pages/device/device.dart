@@ -74,7 +74,7 @@ class DeviceView extends HookConsumerWidget {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          title: CustomTextView.h2(text: ctl.listDevices[i].name),
+          title: CustomTextView.h2(text: ct.listDataLocal[i].name),
           leading: InkWell(
             child: Icon(
               Icons.arrow_back,

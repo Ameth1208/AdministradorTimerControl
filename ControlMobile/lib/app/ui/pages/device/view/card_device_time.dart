@@ -1,7 +1,7 @@
 import 'package:timer_control/app/ui/helpers/global_helpers.dart';
+import 'package:timer_control/app/ui/pages/home/controller/global_controller.dart';
 import 'package:timer_control/app/ui/widgets/global_widgets.dart';
 
-import '../../add/controller/global_controller.dart';
 import 'global_view.dart';
 
 class CardDeviceView extends HookConsumerWidget {
@@ -10,7 +10,7 @@ class CardDeviceView extends HookConsumerWidget {
   final int i;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ctl = ref.watch(addDevicesProvider);
+    final ctl = ref.watch(homeProvider);
     return CustomContainer(
       padding: EdgeInsets.all(context.dp(2)),
       width: context.wp(w),
@@ -29,15 +29,15 @@ class CardDeviceView extends HookConsumerWidget {
             child: Stack(
               children: [
                 Image.asset(
-                  ctl.listDevices.isNotEmpty
-                      ? ctl.listDevices[i].type
+                  ctl.listDataLocal.isNotEmpty
+                      ? ctl.listDataLocal[i].type
                       : CustomImages.arcade,
                 ),
                 Positioned(
                   right: context.wp(1),
                   top: context.hp(1),
                   child: StateCard(
-                    state: ctl.listDevices[i].state,
+                    state: ctl.listDataLocal[i].state,
                   ),
                 ),
               ],

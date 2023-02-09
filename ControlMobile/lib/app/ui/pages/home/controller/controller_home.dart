@@ -3,6 +3,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:timer_control/app/dominio/data/local/local_storage.dart';
+import 'package:timer_control/app/dominio/models/model_devices.dart';
 import 'package:timer_control/app/ui/pages/add/controller/controller_add.dart';
 import 'package:timer_control/app/ui/pages/device/controller/controller_device.dart';
 
@@ -12,7 +14,9 @@ class HomeController extends ChangeNotifier {
   final AddDevicesController dvCtl;
   final DevicesController ctlAr;
 
-  HomeController({required this.dvCtl, required this.ctlAr});
+  HomeController({required this.dvCtl, required this.ctlAr}) {
+    onData();
+  }
 
   String _horaR = "";
 
@@ -25,6 +29,25 @@ class HomeController extends ChangeNotifier {
     //notifyListeners();
   }
 
+  void onData() async {
+    final local = LocalStorage();
+    final value = await local.get();
+    // final List val = value!.replaceAll("[", "").replaceAll("]", "").split(",");
+    final decoList =
+        value?.values.map((e) => (ModelDevices.fromMap(e))).toList() ?? [];
+    //print(decoList);
+    _listDataLocal = decoList;
+    notifyListeners();
+  }
+
+  List<ModelDevices> _listDataLocal = [];
+  List<ModelDevices> get listDataLocal => _listDataLocal;
+  set listDataLocal(List<ModelDevices> listDataLocal) {
+    _listDataLocal = listDataLocal;
+    notifyListeners();
+  }
+
+  ///[Tiempos de Arcades]
   void onTimeChange() async {
     final listDevices = dvCtl.listDevices;
     int r = listDevices.length;

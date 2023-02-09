@@ -15,6 +15,7 @@ class ModelDevices {
     required this.changeTime,
     required this.horaStart,
     required this.horaEnd,
+    required this.id,
   });
 
   final String type;
@@ -26,6 +27,7 @@ class ModelDevices {
   final int changeTime;
   final String horaStart;
   final String horaEnd;
+  final String id;
 
   ModelDevices copyWith({
     String? type,
@@ -37,6 +39,7 @@ class ModelDevices {
     int? changeTime,
     String? horaStart,
     String? horaEnd,
+    String? id,
   }) =>
       ModelDevices(
         type: type ?? this.type,
@@ -48,6 +51,7 @@ class ModelDevices {
         changeTime: changeTime ?? this.changeTime,
         horaStart: horaStart ?? this.horaStart,
         horaEnd: horaEnd ?? this.horaEnd,
+        id: id ?? this.id,
       );
 
   factory ModelDevices.fromJson(String str) =>
@@ -65,6 +69,7 @@ class ModelDevices {
         changeTime: json["changeTime"],
         horaStart: json["horaStart"],
         horaEnd: json["horaEnd"],
+        id: json["id"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -77,5 +82,6 @@ class ModelDevices {
         "changeTime": changeTime,
         "horaStart": horaStart,
         "horaEnd": horaEnd,
+        "id": id,
       };
 }
