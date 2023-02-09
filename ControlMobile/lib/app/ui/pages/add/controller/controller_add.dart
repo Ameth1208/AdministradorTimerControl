@@ -7,6 +7,10 @@ import 'package:timer_control/app/ui/helpers/custom_colors.dart';
 
 ///CONTROLLER ANDROID
 class AddDevicesController extends ChangeNotifier {
+  AddDevicesController() {
+    relog = 10;
+  }
+
   PageController pageController = PageController();
 
   TextEditingController name = TextEditingController();
@@ -45,8 +49,8 @@ class AddDevicesController extends ChangeNotifier {
       colorCard: Random().nextInt(listCardColor.length),
 
       ///time minutos
-      time: 0,
-      changeTime: 0,
+      time: 600,
+      changeTime: 600,
 
       ///
       horaStart: "00:00",
@@ -63,7 +67,7 @@ class AddDevicesController extends ChangeNotifier {
     notifyListeners();
   }
 
-  int _relog = 0;
+  int _relog = 10;
   int get relog => _relog;
   set relog(int relog) {
     _relog = relog;

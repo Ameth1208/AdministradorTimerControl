@@ -16,16 +16,24 @@ class DevicesController extends ChangeNotifier {
 
   ///[Time]
   final DateTime time = DateTime.now();
-  final DateFormat timeFormat = DateFormat.Hm();
+  final DateFormat timeFormat = DateFormat.Hms();
 
-  void onStart(
-    int i,
-  ) {
-    final String horaA = timeFormat.format(time);
-    final String horaF = onHmOrS(horaA);
-    log("$horaA   --  $horaF ");
+  String _horaR = "";
+
+  String get horaR => _horaR;
+  void onHoraR() {
+    final DateTime h = DateTime.now();
+    final DateFormat timeFormat = DateFormat.Hms();
+    _horaR = timeFormat.format(h);
+    notifyListeners();
+  }
+
+  void onStart(int i) {
+    onHoraR();
+    final String horaF = onHmOrS(horaR);
+    log("$horaR   --  $horaF ");
     dvC.listDevices[i] = dvC.listDevices[i].copyWith(
-      horaStart: horaA,
+      horaStart: horaR,
       horaEnd: horaF,
     );
 
@@ -39,17 +47,24 @@ class DevicesController extends ChangeNotifier {
 // ignore: prefer_typing_uninitialized_variables
     String horaEnd;
 
-    if ((int.parse(horaA.split(":")[1]) + 2) > 59) {
-      mf = (int.parse(horaA.split(":")[1]) + 2) - 60;
-      hf = (int.parse(horaA.split(":")[0]) + 1);
+    if ((int.parse(horaA.split(":")[1]) + dvC.relog) > 59) {
+      sf = (int.parse(horaA.split(":")[2]));
+      mf = (int.parse(horaA.split(":")[1]) + dvC.relog) - 60;
+      hf = (int.parse(horaA.split(":")[0]) + dvC.relog);
     } else {
-      mf = (int.parse(horaA.split(":")[1]) + 2);
+      sf = (int.parse(horaA.split(":")[2]));
+      mf = (int.parse(horaA.split(":")[1]) + dvC.relog);
       hf = (int.parse(horaA.split(":")[0]));
     }
-    if (mf < 10) {
-      horaEnd = "$hf:0$mf";
+    if (sf < 10) {
+      horaEnd = "$hf:$mf:0$sf";
+      if (sf < 10 && mf < 10) {
+        horaEnd = "$hf:0$mf:0$sf";
+      }
+    } else if (mf < 10) {
+      horaEnd = "$hf:0$mf:$sf";
     } else {
-      horaEnd = "$hf:$mf";
+      horaEnd = "$hf:$mf:$sf";
     }
     return horaEnd;
   }

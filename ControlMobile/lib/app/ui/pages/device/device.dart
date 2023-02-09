@@ -19,6 +19,11 @@ class DeviceView extends HookConsumerWidget {
     final ctl = ref.watch(addDevicesProvider);
     final socket = ref.watch(devicesProvider);
 
+    final ct = ref.watch(homeProvider);
+    if (ct.dvCtl.listDevices.isNotEmpty) {
+      ct.onTimeChange();
+    }
+
     final size = MediaQuery.of(context).size;
     final bool visible;
     if (size.width < size.height) {

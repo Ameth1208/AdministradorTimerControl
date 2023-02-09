@@ -20,7 +20,7 @@ class HomeController extends ChangeNotifier {
 
   void onHoraR() {
     final DateTime h = DateTime.now();
-    final DateFormat timeFormat = DateFormat.Hm();
+    final DateFormat timeFormat = DateFormat.Hms();
     _horaR = timeFormat.format(h);
     //notifyListeners();
   }
@@ -32,32 +32,57 @@ class HomeController extends ChangeNotifier {
       const Duration(seconds: 5),
       (timer) {
         onHoraR();
+
         for (int i = 0; i < r; i++) {
-          log("$horaR -- ${listDevices[i].horaEnd}");
-          if (int.parse(horaR.split(":")[0]) ==
-                  int.parse(listDevices[i].horaEnd.split(":")[0]) &&
-              int.parse(horaR.split(":")[1]) ==
-                  int.parse(listDevices[i].horaEnd.split(":")[1])) {
+          ///tiempo actual
+          int hr = int.parse(horaR.split(":")[0]);
+          int mr = int.parse(horaR.split(":")[1]);
+          int sr = int.parse(horaR.split(":")[2]);
+
+          ///tiempo final
+          int hf = int.parse(listDevices[i].horaEnd.split(":")[0]);
+          int mf = int.parse(listDevices[i].horaEnd.split(":")[1]);
+          int sf = int.parse(listDevices[i].horaEnd.split(":")[2]);
+
+          ///tiempo inicial
+          int hi = int.parse(listDevices[i].horaStart.split(":")[0]);
+          int mi = int.parse(listDevices[i].horaStart.split(":")[1]);
+          int si = int.parse(listDevices[i].horaStart.split(":")[2]);
+
+          if ((hr <= hf || mr <= mf || sr <= sf) && listDevices[i].state == 1) {
+            if (hr == hi) {
+              final rf = (mr * 60 + sr) - (mi * 60 + si);
+              listDevices[i] = listDevices[i].copyWith(changeTime: rf);
+              log("$rf");
+            } else {
+              final rf = (hr * 60 + mr * 60 + sr) - (hi * 60 + mi * 60 + si);
+              listDevices[i] = listDevices[i].copyWith(changeTime: rf);
+              log("$rf");
+            }
+          }
+
+          ///Bloquear equipo
+          if (hr == hf && mr == mf && sr == sf) {
+            log("$horaR -- ${listDevices[i].horaEnd} : device $i");
             log("bloqueado");
-            listDevices[i].copyWith(
-              horaStart: "00:00",
-              horaEnd: "00:00",
-              state: 2,
-            );
+
+            dvCtl.onState(i, 2);
 
             ctlAr.onStop(listDevices[i].numberIp);
           }
 
-          if (i == r) {
-            i = 0;
-          }
-          log("$i");
+          Future.delayed(
+            const Duration(seconds: 1),
+            () {
+              if (i == r) {
+                i = 0;
+              }
+            },
+          );
         }
 
-        log("busco");
+        //log("busco");
       },
     );
-
-    log("Home");
   }
 }

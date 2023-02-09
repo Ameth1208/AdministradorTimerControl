@@ -59,41 +59,41 @@ class CustomCountDown extends HookConsumerWidget {
         ),
 
         ////Controles tiempo
-        // SizedBox(height: context.hp(2)),
-        // Row(
-        //   crossAxisAlignment: CrossAxisAlignment.center,
-        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //   children: [
-        //     InkWell(
-        //       onTap: () {
-        //         ctl.onTimeDown(i);
-        //       },
-        //       child: Container(
-        //         width: context.wp(width / 3),
-        //         height: context.wp(width / 3),
-        //         decoration: BoxDecoration(
-        //             color: CustomColors.button_100,
-        //             borderRadius: BorderRadius.circular(context.dp(1))),
-        //         child: Icon(Icons.arrow_back,
-        //             color: CustomColors.white, size: context.dp(2)),
-        //       ),
-        //     ),
-        //     InkWell(
-        //       onTap: () {
-        //         ctl.onTimeUp(i);
-        //       },
-        //       child: Container(
-        //         width: context.wp(width / 3),
-        //         height: context.wp(width / 3),
-        //         decoration: BoxDecoration(
-        //             color: CustomColors.button_100,
-        //             borderRadius: BorderRadius.circular(context.dp(1))),
-        //         child: Icon(Icons.arrow_forward,
-        //             color: CustomColors.white, size: context.dp(2)),
-        //       ),
-        //     ),
-        //   ],
-        // ),
+        SizedBox(height: context.hp(2)),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            InkWell(
+              onTap: () {
+                ctl.onTimeDown(i);
+              },
+              child: Container(
+                width: context.wp(width / 3),
+                height: context.wp(width / 3),
+                decoration: BoxDecoration(
+                    color: CustomColors.button_100,
+                    borderRadius: BorderRadius.circular(context.dp(1))),
+                child: Icon(Icons.arrow_back,
+                    color: CustomColors.white, size: context.dp(2)),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                ctl.onTimeUp(i);
+              },
+              child: Container(
+                width: context.wp(width / 3),
+                height: context.wp(width / 3),
+                decoration: BoxDecoration(
+                    color: CustomColors.button_100,
+                    borderRadius: BorderRadius.circular(context.dp(1))),
+                child: Icon(Icons.arrow_forward,
+                    color: CustomColors.white, size: context.dp(2)),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
