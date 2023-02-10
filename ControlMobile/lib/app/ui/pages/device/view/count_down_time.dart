@@ -1,4 +1,5 @@
 import 'package:timer_control/app/ui/helpers/global_helpers.dart';
+import 'package:timer_control/app/ui/pages/home/controller/global_controller.dart';
 
 import '../../add/controller/global_controller.dart';
 import '../controller/global_controller.dart';
@@ -15,27 +16,16 @@ class CustomCountDown extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ctl = ref.watch(addDevicesProvider);
     final cl = ref.watch(devicesProvider);
+    final cth = ref.watch(homeProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // TimerCountdown(
-        //   format: CountDownTimerFormat.minutesSeconds,
-        //   colonsTextStyle: TextStyle(
-        //       color: CustomColors.white,
-        //       fontSize: context.dp(3),
-        //       fontWeight: FontWeight.w900),
-        //   endTime: DateTime.now().add(const Duration(minutes: 0)),
-        //   timeTextStyle: TextStyle(
-        //       color: CustomColors.white,
-        //       fontSize: context.dp(3),
-        //       fontWeight: FontWeight.w900),
-        // ),
         CircularCountDownTimer(
           controller: cl.countController,
           backgroundColor:
-              listCardColor[ctl.listDevices[i].colorCard][0].withOpacity(0.8),
+              listCardColor[cth.listDataLocal[i].colorCard][0].withOpacity(0.8),
           textStyle: TextStyle(
               color: CustomColors.white,
               fontSize: context.dp(2),
@@ -43,19 +33,19 @@ class CustomCountDown extends HookConsumerWidget {
           strokeWidth: context.dp(2),
           width: context.wp(width),
           height: context.wp(width),
-          duration: ctl.listDevices[i].time,
+          duration: cth.listDataLocal[i].time,
           initialDuration:
-              ctl.listDevices[i].changeTime == ctl.listDevices[i].time
+              cth.listDataLocal[i].changeTime == cth.listDataLocal[i].time
                   ? 0
-                  : ctl.listDevices[i].changeTime,
-          autoStart: ctl.listDevices[i].state == 1 ? true : false,
+                  : cth.listDataLocal[i].changeTime,
+          autoStart: cth.listDataLocal[i].state == 1 ? true : false,
           strokeCap: StrokeCap.round,
-          fillColor: listCardColor[ctl.listDevices[i].colorCard][0],
+          fillColor: listCardColor[cth.listDataLocal[i].colorCard][0],
           isReverse: true,
           isReverseAnimation: true,
           isTimerTextShown: true,
           ringColor:
-              listCardColor[ctl.listDevices[i].colorCard][0].withOpacity(0.5),
+              listCardColor[cth.listDataLocal[i].colorCard][0].withOpacity(0.5),
         ),
 
         ////Controles tiempo
@@ -67,6 +57,7 @@ class CustomCountDown extends HookConsumerWidget {
             InkWell(
               onTap: () {
                 ctl.onTimeDown(i);
+                cth.onData();
               },
               child: Container(
                 width: context.wp(width / 3),
@@ -81,6 +72,7 @@ class CustomCountDown extends HookConsumerWidget {
             InkWell(
               onTap: () {
                 ctl.onTimeUp(i);
+                cth.onData();
               },
               child: Container(
                 width: context.wp(width / 3),

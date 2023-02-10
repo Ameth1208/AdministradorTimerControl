@@ -5,16 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timer_control/app/dominio/data/local/local_storage.dart';
 import 'package:timer_control/app/dominio/models/model_devices.dart';
-import 'package:timer_control/app/ui/pages/add/controller/controller_add.dart';
-import 'package:timer_control/app/ui/pages/device/controller/controller_device.dart';
+import 'package:web_socket_channel/io.dart';
 
 ///CONTROLLER ANDROID
 class HomeController extends ChangeNotifier {
   ///[TimeGlobal]  la idea es crear una lista de tiempos que se pueda usar para la activacion de x equipo
-  final AddDevicesController dvCtl;
-  final DevicesController ctlAr;
+  //final AddDevicesController dvCtl;
 
-  HomeController({required this.dvCtl, required this.ctlAr}) {
+  HomeController() {
     onData();
   }
 
@@ -49,18 +47,29 @@ class HomeController extends ChangeNotifier {
 
   ///[Tiempos de Arcades]
   void onTimeChange() async {
-    final listDevices = dvCtl.listDevices;
+    final listDevices = _listDataLocal;
     int r = listDevices.length;
+
+    ///List
+    final local = LocalStorage();
+    final value = await local.get();
+
     Timer.periodic(
       const Duration(seconds: 5),
       (timer) {
-        onHoraR();
+        //onData();
 
         for (int i = 0; i < r; i++) {
+          onHoraR();
+
+          ///Lista
+          final id = listDevices[i].id;
+          log(_horaR + "  " + listDevices[i].horaEnd);
+
           ///tiempo actual
-          int hr = int.parse(horaR.split(":")[0]);
-          int mr = int.parse(horaR.split(":")[1]);
-          int sr = int.parse(horaR.split(":")[2]);
+          int hr = int.parse(_horaR.split(":")[0]);
+          int mr = int.parse(_horaR.split(":")[1]);
+          int sr = int.parse(_horaR.split(":")[2]);
 
           ///tiempo final
           int hf = int.parse(listDevices[i].horaEnd.split(":")[0]);
@@ -75,23 +84,27 @@ class HomeController extends ChangeNotifier {
           if ((hr <= hf || mr <= mf || sr <= sf) && listDevices[i].state == 1) {
             if (hr == hi) {
               final rf = (mr * 60 + sr) - (mi * 60 + si);
-              listDevices[i] = listDevices[i].copyWith(changeTime: rf);
+              // value![id] = listDataLocal[i].copyWith(changeTime: rf).toMap();
+              // local.save(value);
+
               log("$rf");
             } else {
               final rf = (hr * 60 + mr * 60 + sr) - (hi * 60 + mi * 60 + si);
-              listDevices[i] = listDevices[i].copyWith(changeTime: rf);
+              // value![id] = listDataLocal[i].copyWith(changeTime: rf).toMap();
+              // local.save(value);
               log("$rf");
             }
+            log("$_horaR --  : device $i");
           }
 
           ///Bloquear equipo
           if (hr == hf && mr == mf && sr == sf) {
-            log("$horaR -- ${listDevices[i].horaEnd} : device $i");
+            log("$_horaR -- ${listDevices[i].horaEnd} : device $i");
             log("bloqueado");
 
-            dvCtl.onState(i, 2);
+            onState(i, 2);
 
-            ctlAr.onStop(listDevices[i].numberIp);
+            onStop(listDevices[i].numberIp);
           }
 
           Future.delayed(
@@ -108,4 +121,51 @@ class HomeController extends ChangeNotifier {
       },
     );
   }
+
+  void onState(int i, int t) async {
+    final local = LocalStorage();
+    final value = await local.get();
+    final id = listDataLocal[i].id;
+
+    value![id] = listDataLocal[i].copyWith(state: t).toMap();
+    local.save(value);
+    onData();
+
+    notifyListeners();
+  }
+
+  ///[SOCKET]
+  ///
+  void onLock(String ip) {
+    socketEvent("timeUp", ip);
+  }
+
+  void onStop(String ip) {
+    socketEvent("timeUp", ip);
+  }
+
+  ///[unlock]
+  void onUnlock(String ip) {
+    socketEvent("unlock", ip);
+  }
+
+  ///[Socket]
+  void socketEvent(String action, String ip) {
+    IOWebSocketChannel? channel;
+    try {
+      channel = IOWebSocketChannel.connect('ws://$ip:8080');
+    } catch (e) {
+      // ignore: avoid_print
+      print("Error on connecting to websocket: $e");
+    }
+    channel?.sink.add(action);
+    channel?.stream.listen((event) {
+      print(event);
+      // Now only close the connection and we are done here!
+      channel!.sink.close();
+    });
+  }
+
+  ///[]
+
 }

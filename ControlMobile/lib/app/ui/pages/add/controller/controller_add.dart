@@ -5,12 +5,16 @@ import 'package:timer_control/app/dominio/data/data_glogal.dart';
 import 'package:timer_control/app/dominio/models/model_devices.dart';
 import 'package:timer_control/app/ui/helpers/custom_assets.dart';
 import 'package:timer_control/app/ui/helpers/custom_colors.dart';
+import 'package:timer_control/app/ui/pages/home/controller/controller_home.dart';
 
 ///CONTROLLER ANDROID
 class AddDevicesController extends ChangeNotifier {
-  AddDevicesController() {
+  AddDevicesController({required this.homeCtl}) {
     relog = 10;
   }
+
+  ///[HomeController]
+  final HomeController homeCtl;
 
   PageController pageController = PageController();
 
@@ -29,23 +33,12 @@ class AddDevicesController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onState(int i, int t) async {
-    final local = LocalStorage();
-    final value = await local.get();
-    final id = listDevices[i].id;
-    final isValue = value?.keys.contains(id);
-    value![id] = listDevices[i].copyWith(state: t).toMap();
-    local.save(value);
-
-    notifyListeners();
-  }
-
   ///[Position Image]tim
   int _type = 0;
   int get type => _type;
   set type(int type) {
     _type = type;
-    notifyListeners();
+    //notifyListeners();
   }
 
   ///[Añadir dispositivo]
@@ -82,12 +75,8 @@ class AddDevicesController extends ChangeNotifier {
 
     name.clear();
     numberIp.clear();
-    notifyListeners();
-  }
-
-  Future<void> removeDevice(int i) async {
-    listDevices.removeAt(i);
-    notifyListeners();
+    homeCtl.onData();
+    //notifyListeners();
   }
 
   int _relog = 10;
@@ -97,30 +86,50 @@ class AddDevicesController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onTimeUp(int i) {
+  void onTimeUp(int i) async {
     _relog += 5;
-    listDevices[i] = listDevices[i].copyWith(time: relog * 60);
-    listDevices[i] = listDevices[i].copyWith(changeTime: relog * 60);
-    notifyListeners();
+
+    final local = LocalStorage();
+    final value = await local.get();
+    final id = homeCtl.listDataLocal[i].id;
+
+    value![id] = homeCtl.listDataLocal[i]
+        .copyWith(time: relog * 60, changeTime: relog * 60)
+        .toMap();
+    local.save(value);
+    homeCtl.onData();
+
+    // listDevices[i] = listDevices[i].copyWith(time: relog * 60);
+    // listDevices[i] = listDevices[i].copyWith(changeTime: relog * 60);
+    //notifyListeners();
   }
 
-  void onTimeDown(int i) {
+  void onTimeDown(int i) async {
     if (relog > 1) {
       _relog -= 5;
-      listDevices[i] = listDevices[i].copyWith(time: relog * 60);
-      listDevices[i] = listDevices[i].copyWith(changeTime: relog * 60);
+      final local = LocalStorage();
+      final value = await local.get();
+      final id = homeCtl.listDataLocal[i].id;
+
+      value![id] = homeCtl.listDataLocal[i]
+          .copyWith(time: relog * 60, changeTime: relog * 60)
+          .toMap();
+      local.save(value);
     }
-    notifyListeners();
+    homeCtl.onData();
+    //notifyListeners();
   }
 
   void onChangeTime(int i, int time) async {
     final local = LocalStorage();
     final value = await local.get();
-    final id = listDevices[i].id;
-    final isValue = value?.keys.contains(id);
-    value![id] =
-        listDevices[i].copyWith(changeTime: listDevices[i].time - time).toMap();
+    final id = homeCtl.listDataLocal[i].id;
+
+    value![id] = homeCtl.listDataLocal[i]
+        .copyWith(changeTime: homeCtl.listDataLocal[i].time - time)
+        .toMap();
     local.save(value);
+    homeCtl.onData();
 
     //print(listDevices[i].changeTime);
 //    notifyListeners();

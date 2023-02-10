@@ -10,8 +10,9 @@ class HomeMobile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ctl = ref.watch(homeProvider);
-    if (ctl.dvCtl.listDevices.isNotEmpty) {
+    if (ctl.listDataLocal.isNotEmpty) {
       ctl.onTimeChange();
+      ctl.onData();
     }
     return SafeArea(
       child: Column(

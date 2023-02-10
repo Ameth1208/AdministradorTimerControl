@@ -1,6 +1,7 @@
 import 'package:timer_control/app/ui/helpers/global_helpers.dart';
 import 'package:timer_control/app/ui/pages/add/controller/global_controller.dart';
 import 'package:timer_control/app/ui/pages/add/view/content_img.dart';
+import 'package:timer_control/app/ui/pages/home/controller/global_controller.dart';
 import 'package:timer_control/app/ui/pages/navigator/controller/global_controller.dart';
 
 import 'package:timer_control/app/ui/widgets/global_widgets.dart';
@@ -11,7 +12,7 @@ class AddItemList extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ctl = ref.watch(addDevicesProvider);
     final nt = ref.watch(navigatorProvider);
-
+    final cth = ref.watch(homeProvider);
     final size = MediaQuery.of(context).size;
     final bool visible;
     if (size.width < size.height) {
@@ -32,10 +33,11 @@ class AddItemList extends HookConsumerWidget {
       SizedBox(height: context.hp(5)),
       CustomButton(
         text: 'Add devices',
-        onTap: () {
+        onTap: () async {
           ctl.onAdd(ctl.type);
           ctl.type = 0;
           nt.onPage(0);
+          cth.onData();
         },
       ),
     ];

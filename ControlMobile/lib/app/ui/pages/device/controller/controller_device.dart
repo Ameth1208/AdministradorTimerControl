@@ -3,14 +3,20 @@
 import 'dart:developer';
 
 import 'package:intl/intl.dart';
+import 'package:timer_control/app/dominio/data/data_glogal.dart';
 import 'package:timer_control/app/ui/helpers/global_helpers.dart';
 import 'package:timer_control/app/ui/pages/add/controller/global_controller.dart';
+import 'package:timer_control/app/ui/pages/home/controller/controller_home.dart';
 import 'package:web_socket_channel/io.dart';
 
 ///CONTROLLER ANDROID
 class DevicesController extends ChangeNotifier {
-  DevicesController({required this.dvC});
-  final AddDevicesController dvC;
+  DevicesController({
+    required this.dvC,
+    required this.addCtl,
+  });
+  final HomeController dvC;
+  final AddDevicesController addCtl;
 
   CountDownController countController = CountDownController();
 
@@ -25,19 +31,29 @@ class DevicesController extends ChangeNotifier {
     final DateTime h = DateTime.now();
     final DateFormat timeFormat = DateFormat.Hms();
     _horaR = timeFormat.format(h);
-    notifyListeners();
   }
 
-  void onStart(int i) {
+  void onStart(int i) async {
     onHoraR();
     final String horaF = onHmOrS(horaR);
+
+    final local = LocalStorage();
+    final value = await local.get();
+    final id = dvC.listDataLocal[i].id;
+    //final isValue = value?.keys.contains(id);
+    value![id] = dvC.listDataLocal[i]
+        .copyWith(
+          horaStart: _horaR,
+          horaEnd: horaF,
+        )
+        .toMap();
+    local.save(value);
+    //final data = await local.get();
+    dvC.onData();
     log("$horaR   --  $horaF ");
-    dvC.listDevices[i] = dvC.listDevices[i].copyWith(
-      horaStart: horaR,
-      horaEnd: horaF,
-    );
 
     countController.start();
+    //notifyListeners();
   }
 
   String onHmOrS(String horaA) {
@@ -47,13 +63,13 @@ class DevicesController extends ChangeNotifier {
 // ignore: prefer_typing_uninitialized_variables
     String horaEnd;
 
-    if ((int.parse(horaA.split(":")[1]) + dvC.relog) > 59) {
+    if ((int.parse(horaA.split(":")[1]) + addCtl.relog) > 59) {
       sf = (int.parse(horaA.split(":")[2]));
-      mf = (int.parse(horaA.split(":")[1]) + dvC.relog) - 60;
-      hf = (int.parse(horaA.split(":")[0]) + dvC.relog);
+      mf = (int.parse(horaA.split(":")[1]) + addCtl.relog) - 60;
+      hf = (int.parse(horaA.split(":")[0]));
     } else {
       sf = (int.parse(horaA.split(":")[2]));
-      mf = (int.parse(horaA.split(":")[1]) + dvC.relog);
+      mf = (int.parse(horaA.split(":")[1]) + addCtl.relog);
       hf = (int.parse(horaA.split(":")[0]));
     }
     if (sf < 10) {

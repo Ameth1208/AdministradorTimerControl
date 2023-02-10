@@ -19,6 +19,7 @@ class ListCard extends HookConsumerWidget {
     } else {
       visible = false;
     }
+    ctl.onData();
 
     return ListView(
       physics: const BouncingScrollPhysics(),

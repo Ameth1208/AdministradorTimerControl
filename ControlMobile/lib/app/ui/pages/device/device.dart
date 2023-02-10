@@ -18,9 +18,9 @@ class DeviceView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ctl = ref.watch(addDevicesProvider);
     final socket = ref.watch(devicesProvider);
-
     final ct = ref.watch(homeProvider);
-    if (ct.dvCtl.listDevices.isNotEmpty) {
+
+    if (ct.listDataLocal.isNotEmpty) {
       ct.onTimeChange();
     }
 
@@ -31,6 +31,7 @@ class DeviceView extends HookConsumerWidget {
     } else {
       visible = false;
     }
+    ct.onData();
 
     final List<Widget> listWidget = [
       CustomButtonDevices(
@@ -38,8 +39,8 @@ class DeviceView extends HookConsumerWidget {
         icon: LineIcons.unlock,
         color: CustomColors.button,
         onTap: () {
-          ctl.onChangeTime(i, ctl.listDevices[i].time);
-          ctl.onState(i, 0);
+          //ctl.onChangeTime(i, ct.listDataLocal[i].time);
+          ct.onState(i, 0);
         },
       ),
       SizedBox(height: context.hp(5)),
@@ -49,8 +50,8 @@ class DeviceView extends HookConsumerWidget {
         color: CustomColors.color_30,
         onTap: () {
           socket.onStart(i);
-          ctl.onChangeTime(i, ctl.listDevices[i].time);
-          ctl.onState(i, 1);
+          ctl.onChangeTime(i, ct.listDataLocal[i].time);
+          ct.onState(i, 1);
         },
       ),
       SizedBox(height: context.hp(5)),
@@ -59,15 +60,13 @@ class DeviceView extends HookConsumerWidget {
         color: CustomColors.gradientLock,
         icon: LineIcons.stop,
         onTap: () {
-          socket.onStop(ctl.listDevices[i].numberIp);
+          socket.onStop(ct.listDataLocal[i].numberIp);
           socket.countController.reset();
-          ctl.onChangeTime(i, ctl.listDevices[i].time);
-          ctl.onState(i, 2);
+          ctl.onChangeTime(i, ct.listDataLocal[i].time);
+          ct.onState(i, 2);
         },
       ),
     ];
-
-    final home = ref.watch(homeProvider);
 
     return SafeArea(
       child: Scaffold(
@@ -82,7 +81,7 @@ class DeviceView extends HookConsumerWidget {
               size: context.dp(2.5),
             ),
             onTap: () {
-              home.onTimeChange();
+              ct.onTimeChange();
               Navigator.pop(context);
             },
           ),
